@@ -63,7 +63,7 @@ export default function SetupScreen({ onStart }: Props) {
               className={styles.nameInput}
               type="text"
               maxLength={10}
-              placeholder="Player 1"
+              placeholder=""
               value={p1Name}
               onChange={e => setP1Name(e.target.value)}
             />
