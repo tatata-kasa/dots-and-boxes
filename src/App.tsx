@@ -28,8 +28,6 @@ export default function App() {
   const p1Active = state.currentPlayer === 1;
   const p2Active = state.currentPlayer === 2;
 
-  const drinkWho = state.drinkPlayer === 'both' ? '両者' : `Player ${state.drinkPlayer}`;
-
   return (
     <div className={styles.app}>
       <header className={styles.header}>
@@ -45,9 +43,7 @@ export default function App() {
 
         <div className={styles.turnIndicator}>
           {p1Active && <span className={styles.turnArrow}>◀</span>}
-          <span>
-            {state.phase === 'rolling' ? '振る番' : '線を引く'}
-          </span>
+          <span>{state.phase === 'rolling' ? '振る番' : '線を引く'}</span>
           {p2Active && <span className={styles.turnArrow}>▶</span>}
         </div>
 
@@ -70,7 +66,6 @@ export default function App() {
           onRollDone={rollDice}
           phase={state.phase}
           linesLeft={state.linesLeft}
-          bonusTurn={state.bonusTurn}
         />
       </div>
 
@@ -79,7 +74,7 @@ export default function App() {
           <div className={styles.drinkBannerInner}>
             <span className={styles.drinkEmoji}>🍺</span>
             <div className={styles.drinkBannerText}>飲みマス発動！</div>
-            <div className={styles.drinkBannerSub}>{drinkWho} — 1杯飲め！</div>
+            <div className={styles.drinkBannerSub}>Player {state.drinkPlayer} — 1杯飲め！</div>
           </div>
         </div>
       )}

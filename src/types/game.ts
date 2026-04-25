@@ -7,8 +7,8 @@ export interface LineKey {
 }
 
 export interface GameState {
-  horizontalLines: boolean[][];
-  verticalLines: boolean[][];
+  horizontalLines: (Player | null)[][];
+  verticalLines: (Player | null)[][];
   boxes: (Player | null)[][];
   currentPlayer: Player;
   scores: Record<Player, number>;
@@ -18,11 +18,5 @@ export interface GameState {
   isGameOver: boolean;
   drinkSquare: { row: number; col: number };
   drinkSquareRevealed: boolean;
-  drinkPlayer: Player | 'both' | null;
-  bonusTurn: boolean;
-  completedBoxThisTurn: boolean;
-}
-
-export function lineKeyToString(line: LineKey): string {
-  return `${line.type}-${line.row}-${line.col}`;
+  drinkPlayer: Player | null;
 }

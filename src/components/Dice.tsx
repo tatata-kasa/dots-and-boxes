@@ -7,29 +7,29 @@ interface Props {
   onRollDone: (value: number) => void;
   phase: 'rolling' | 'drawing';
   linesLeft: number;
-  bonusTurn: boolean;
 }
 
-export default function Dice({ onRollDone, phase, linesLeft, bonusTurn }: Props) {
+export default function Dice({ onRollDone, phase, linesLeft }: Props) {
   const diceRef = useRef<ReactDiceRef>(null);
   const [rolling, setRolling] = useState(false);
+  // react-dice-complete fires rollDone once on mount — ignore that initial call
+  const hasRolled = useRef(false);
 
   const handleRoll = () => {
     if (rolling) return;
     setRolling(true);
+    hasRolled.current = true;
     diceRef.current?.rollAll();
   };
 
   const handleRollDone = (_total: number, values: number[]) => {
+    if (!hasRolled.current) return;
     setRolling(false);
     onRollDone(values[0]);
   };
 
   return (
     <div className={styles.diceArea}>
-      {bonusTurn && phase === 'rolling' && (
-        <div className={styles.bonusMsg}>🎉 ボーナスターン！もう一度振れる</div>
-      )}
       <div className={styles.diceRow}>
         <ReactDice
           ref={diceRef}
@@ -46,11 +46,7 @@ export default function Dice({ onRollDone, phase, linesLeft, bonusTurn }: Props)
         />
       </div>
       {phase === 'rolling' ? (
-        <button
-          className={styles.rollBtn}
-          onClick={handleRoll}
-          disabled={rolling}
-        >
+        <button className={styles.rollBtn} onClick={handleRoll} disabled={rolling}>
           {rolling ? '🎲 振り中...' : '🎲 サイコロを振る'}
         </button>
       ) : (

@@ -11,9 +11,9 @@ function createInitialState(): GameState {
   };
 
   return {
-    horizontalLines: Array.from({ length: ROWS + 1 }, () => Array(COLS).fill(false)),
-    verticalLines: Array.from({ length: ROWS }, () => Array(COLS + 1).fill(false)),
-    boxes: Array.from({ length: ROWS }, () => Array(COLS).fill(null)),
+    horizontalLines: Array.from({ length: ROWS + 1 }, () => Array<Player | null>(COLS).fill(null)),
+    verticalLines: Array.from({ length: ROWS }, () => Array<Player | null>(COLS + 1).fill(null)),
+    boxes: Array.from({ length: ROWS }, () => Array<Player | null>(COLS).fill(null)),
     currentPlayer: 1,
     scores: { 1: 0, 2: 0 },
     diceValue: null,
@@ -23,8 +23,6 @@ function createInitialState(): GameState {
     drinkSquare,
     drinkSquareRevealed: false,
     drinkPlayer: null,
-    bonusTurn: false,
-    completedBoxThisTurn: false,
   };
 }
 
@@ -75,8 +73,6 @@ export function useGameState() {
       diceValue: value,
       linesLeft: value,
       phase: 'drawing',
-      bonusTurn: false,
-      completedBoxThisTurn: false,
     }));
   }, []);
 
@@ -88,11 +84,11 @@ export function useGameState() {
       const newV = prev.verticalLines.map(row => [...row]);
 
       if (line.type === 'h') {
-        if (newH[line.row][line.col]) return prev;
-        newH[line.row][line.col] = true;
+        if (newH[line.row][line.col] !== null) return prev;
+        newH[line.row][line.col] = prev.currentPlayer;
       } else {
-        if (newV[line.row][line.col]) return prev;
-        newV[line.row][line.col] = true;
+        if (newV[line.row][line.col] !== null) return prev;
+        newV[line.row][line.col] = prev.currentPlayer;
       }
 
       const stateWithNewLine = { ...prev, horizontalLines: newH, verticalLines: newV };
@@ -113,15 +109,8 @@ export function useGameState() {
       }
 
       const newLinesLeft = prev.linesLeft - 1;
-      // Track if any box was completed during this turn (across multiple lines)
-      const completedBoxThisTurn = prev.completedBoxThisTurn || completedCount > 0;
 
       if (isGameOver) {
-        let winner: Player | 'both';
-        if (newScores[1] > newScores[2]) winner = 2;
-        else if (newScores[2] > newScores[1]) winner = 1;
-        else winner = 'both';
-
         return {
           ...stateWithNewLine,
           boxes: newBoxes,
@@ -129,27 +118,12 @@ export function useGameState() {
           linesLeft: 0,
           phase: 'rolling',
           isGameOver: true,
-          completedBoxThisTurn: false,
           drinkSquareRevealed,
-          drinkPlayer: drinkTriggered ? prev.currentPlayer : winner === 'both' ? 'both' : winner,
+          drinkPlayer,
         };
       }
 
       if (newLinesLeft <= 0) {
-        if (completedBoxThisTurn) {
-          return {
-            ...stateWithNewLine,
-            boxes: newBoxes,
-            scores: newScores,
-            linesLeft: 0,
-            phase: 'rolling',
-            diceValue: null,
-            drinkSquareRevealed,
-            drinkPlayer,
-            bonusTurn: true,
-            completedBoxThisTurn: false,
-          };
-        }
         return {
           ...stateWithNewLine,
           boxes: newBoxes,
@@ -160,8 +134,6 @@ export function useGameState() {
           currentPlayer: prev.currentPlayer === 1 ? 2 : 1,
           drinkSquareRevealed,
           drinkPlayer,
-          bonusTurn: false,
-          completedBoxThisTurn: false,
         };
       }
 
@@ -172,7 +144,6 @@ export function useGameState() {
         linesLeft: newLinesLeft,
         drinkSquareRevealed,
         drinkPlayer,
-        completedBoxThisTurn,
       };
     });
   }, []);

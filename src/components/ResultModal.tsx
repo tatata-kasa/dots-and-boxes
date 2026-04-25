@@ -40,8 +40,7 @@ export default function ResultModal({ state, onReplay }: Props) {
   }
 
   if (drinkSquareRevealed && drinkPlayer) {
-    const who = drinkPlayer === 'both' ? '両者' : `Player ${drinkPlayer}`;
-    drinkMsgLines.push(`💀 飲みマス発動！ ${who} も追加で1杯！`);
+    drinkMsgLines.push(`💀 飲みマス発動！ Player ${drinkPlayer} も追加で1杯！`);
   }
 
   return (

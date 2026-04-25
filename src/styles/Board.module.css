@@ -7,30 +7,33 @@
 }
 
 .svg {
+  width: 100%;
+  height: auto;
   overflow: visible;
+  touch-action: none;
 }
 
 .dot {
   fill: #f5deb3;
-  filter: drop-shadow(0 0 4px rgba(245, 222, 179, 0.8));
+  filter: drop-shadow(0 0 3px rgba(245, 222, 179, 0.7));
 }
 
 .boxFill1 {
-  fill: rgba(220, 80, 80, 0.55);
+  fill: rgba(220, 80, 80, 0.45);
 }
 
 .boxFill2 {
-  fill: rgba(80, 140, 220, 0.55);
+  fill: rgba(80, 140, 220, 0.45);
 }
 
 .boxDrink {
-  fill: rgba(255, 180, 0, 0.2);
+  fill: rgba(255, 180, 0, 0.25);
   animation: drinkPulse 1.5s infinite alternate;
 }
 
 @keyframes drinkPulse {
   from { fill: rgba(255, 180, 0, 0.2); }
-  to { fill: rgba(255, 180, 0, 0.5); }
+  to   { fill: rgba(255, 180, 0, 0.5); }
 }
 
 .drinkIcon {
@@ -53,33 +56,25 @@
   stroke-linecap: round;
 }
 
-.lineHitArea {
-  stroke: transparent;
-  fill: none;
-  cursor: pointer;
+/* Ghost line shown when it's not your turn to draw */
+.lineGhost {
+  stroke: rgba(245, 222, 179, 0.12);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 3 5;
+  pointer-events: none;
 }
 
-.lineHitArea:hover .linePreview {
-  opacity: 1;
-}
-
-.linePreview {
-  stroke: rgba(245, 222, 179, 0.35);
+/* Hover preview line shown on draw phase */
+.lineHover {
+  stroke: rgba(245, 222, 179, 0.0);
   stroke-width: 3;
   stroke-linecap: round;
   stroke-dasharray: 4 4;
   pointer-events: none;
-  transition: opacity 0.15s;
+  transition: stroke 0.1s;
 }
 
-.lineHitAreaGroup {
-  cursor: pointer;
-}
-
-.lineHitAreaGroup:hover .linePreview {
-  opacity: 1;
-}
-
-.lineHitAreaGroupDisabled {
-  cursor: default;
+g:hover .lineHover {
+  stroke: rgba(245, 222, 179, 0.45);
 }
