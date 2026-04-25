@@ -1,0 +1,85 @@
+.boardWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 8px 0;
+}
+
+.svg {
+  overflow: visible;
+}
+
+.dot {
+  fill: #f5deb3;
+  filter: drop-shadow(0 0 4px rgba(245, 222, 179, 0.8));
+}
+
+.boxFill1 {
+  fill: rgba(220, 80, 80, 0.55);
+}
+
+.boxFill2 {
+  fill: rgba(80, 140, 220, 0.55);
+}
+
+.boxDrink {
+  fill: rgba(255, 180, 0, 0.2);
+  animation: drinkPulse 1.5s infinite alternate;
+}
+
+@keyframes drinkPulse {
+  from { fill: rgba(255, 180, 0, 0.2); }
+  to { fill: rgba(255, 180, 0, 0.5); }
+}
+
+.drinkIcon {
+  font-size: 22px;
+  dominant-baseline: middle;
+  text-anchor: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+.lineDrawn1 {
+  stroke: #e05555;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.lineDrawn2 {
+  stroke: #5588dd;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.lineHitArea {
+  stroke: transparent;
+  fill: none;
+  cursor: pointer;
+}
+
+.lineHitArea:hover .linePreview {
+  opacity: 1;
+}
+
+.linePreview {
+  stroke: rgba(245, 222, 179, 0.35);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 4 4;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.lineHitAreaGroup {
+  cursor: pointer;
+}
+
+.lineHitAreaGroup:hover .linePreview {
+  opacity: 1;
+}
+
+.lineHitAreaGroupDisabled {
+  cursor: default;
+}

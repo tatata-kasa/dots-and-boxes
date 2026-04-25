@@ -1,0 +1,134 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 5, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: linear-gradient(160deg, #2a1a08 0%, #1a0e02 100%);
+  border: 2px solid #c8860a;
+  border-radius: 20px;
+  padding: 32px 28px;
+  max-width: 340px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(200, 134, 10, 0.3);
+  animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.trophy {
+  font-size: 3.5rem;
+  margin-bottom: 8px;
+  animation: bounce 0.6s ease 0.3s both;
+}
+
+@keyframes bounce {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #f5deb3;
+  margin: 0 0 4px;
+  letter-spacing: 0.05em;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #c8a96e;
+  margin: 0 0 20px;
+}
+
+.scores {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.scoreCard {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px 18px;
+  min-width: 90px;
+}
+
+.scoreCard.winner {
+  border: 1.5px solid #f0ad1a;
+  background: rgba(240, 173, 26, 0.12);
+}
+
+.playerLabel {
+  font-size: 0.75rem;
+  color: #c8a96e;
+  margin-bottom: 4px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.playerLabel.p1 { color: #e05555; }
+.playerLabel.p2 { color: #5588dd; }
+
+.scoreNum {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #f5deb3;
+}
+
+.drinkMsg {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #f0ad1a;
+  margin-bottom: 24px;
+  padding: 10px 16px;
+  background: rgba(240, 173, 26, 0.1);
+  border-radius: 10px;
+  border: 1px solid rgba(240, 173, 26, 0.3);
+  line-height: 1.5;
+}
+
+.drinkSquareMsg {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-top: 6px;
+  font-weight: 400;
+}
+
+.replayBtn {
+  background: linear-gradient(135deg, #c8860a, #f0ad1a);
+  color: #1a0e00;
+  font-weight: 800;
+  font-size: 1rem;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 36px;
+  cursor: pointer;
+  width: 100%;
+  font-family: inherit;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 14px rgba(200, 134, 10, 0.45);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.replayBtn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 6px rgba(200, 134, 10, 0.35);
+}

@@ -1,0 +1,174 @@
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, #0e0700 0%, #1a0e02 60%, #0e0700 100%);
+  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  color: #f5deb3;
+  padding: 0 0 24px;
+}
+
+.header {
+  width: 100%;
+  padding: 16px 0 10px;
+  text-align: center;
+  border-bottom: 1px solid rgba(200, 134, 10, 0.25);
+  position: relative;
+}
+
+.headerTitle {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #f0ad1a;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 12px rgba(240, 173, 26, 0.6);
+  margin: 0;
+}
+
+.headerSub {
+  font-size: 0.7rem;
+  color: #c8a96e;
+  margin: 2px 0 0;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+}
+
+.playerBar {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 10px 16px;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.playerCard {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(200, 134, 10, 0.2);
+  border-radius: 12px;
+  padding: 10px 12px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.playerCard.active {
+  border-color: #f0ad1a;
+  background: rgba(240, 173, 26, 0.08);
+  box-shadow: 0 0 14px rgba(240, 173, 26, 0.2);
+}
+
+.playerCard.p1 .playerName { color: #e05555; }
+.playerCard.p2 .playerName { color: #5588dd; }
+
+.playerName {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+
+.playerScore {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #f5deb3;
+  line-height: 1;
+}
+
+.turnIndicator {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  color: #c8a96e;
+  gap: 4px;
+  padding: 0 4px;
+  min-width: 44px;
+}
+
+.turnArrow {
+  font-size: 1.1rem;
+  color: #f0ad1a;
+}
+
+.divider {
+  width: 90%;
+  max-width: 440px;
+  height: 1px;
+  background: rgba(200, 134, 10, 0.15);
+  margin: 4px 0;
+}
+
+.boardSection {
+  width: 100%;
+  max-width: 480px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.diceSection {
+  width: 100%;
+  max-width: 480px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.drinkBanner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 50;
+  animation: drinkFade 2.4s ease forwards;
+}
+
+@keyframes drinkFade {
+  0% { opacity: 0; transform: scale(0.6); }
+  20% { opacity: 1; transform: scale(1.1); }
+  70% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.9); }
+}
+
+.drinkBannerInner {
+  background: rgba(20, 10, 0, 0.92);
+  border: 2.5px solid #f0ad1a;
+  border-radius: 20px;
+  padding: 24px 36px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(240, 173, 26, 0.5);
+}
+
+.drinkEmoji {
+  font-size: 3.5rem;
+  display: block;
+  animation: beerBounce 0.4s ease 0.2s both;
+}
+
+@keyframes beerBounce {
+  0% { transform: translateY(-20px) rotate(-10deg); }
+  50% { transform: translateY(4px) rotate(5deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+
+.drinkBannerText {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #f5deb3;
+  margin-top: 8px;
+}
+
+.drinkBannerSub {
+  font-size: 0.85rem;
+  color: #c8a96e;
+  margin-top: 4px;
+}
