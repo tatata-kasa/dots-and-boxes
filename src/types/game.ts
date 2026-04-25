@@ -10,7 +10,6 @@ export interface GameConfig {
   rows: number;
   cols: number;
   drinkSquareCount: number;
-  showGhostLines: boolean;
   playerNames: [string, string];
 }
 

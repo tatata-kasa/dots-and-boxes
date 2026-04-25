@@ -32,7 +32,6 @@ function GridPreview({ dotRows, dotCols }: { dotRows: number; dotCols: number })
 export default function SetupScreen({ onStart }: Props) {
   const [gridIdx, setGridIdx]       = useState(0);
   const [drinkCount, setDrinkCount] = useState(1);
-  const [showGhost, setShowGhost]   = useState(true);
   const [p1Name, setP1Name]         = useState('');
   const [p2Name, setP2Name]         = useState('');
 
@@ -42,7 +41,6 @@ export default function SetupScreen({ onStart }: Props) {
       rows: g.rows,
       cols: g.cols,
       drinkSquareCount: drinkCount,
-      showGhostLines: showGhost,
       playerNames: [p1Name.trim(), p2Name.trim()],
     });
   };
@@ -51,7 +49,7 @@ export default function SetupScreen({ onStart }: Props) {
     <div className={styles.screen}>
       <div className={styles.logoArea}>
         <span className={styles.logoEmoji}>🍺</span>
-        <h1 className={styles.title}>DOTS &amp; BOXES 飲みゲー</h1>
+        <h1 className={styles.title}>DOTS &amp; BOXES with Dice</h1>
         <p className={styles.subtitle}>線を引いてマスを取れ！負けたら飲め！</p>
       </div>
 
@@ -76,7 +74,7 @@ export default function SetupScreen({ onStart }: Props) {
               className={styles.nameInput}
               type="text"
               maxLength={10}
-              placeholder="Player 2"
+              placeholder=""
               value={p2Name}
               onChange={e => setP2Name(e.target.value)}
             />
@@ -120,25 +118,6 @@ export default function SetupScreen({ onStart }: Props) {
               <span className={styles.drinkBtnLabel}>{'🍺'.repeat(n)}</span>
             </button>
           ))}
-        </div>
-      </div>
-
-      {/* Ghost lines toggle */}
-      <div className={styles.section}>
-        <div className={styles.sectionLabel}>ガイドライン（破線）</div>
-        <div className={styles.toggleRow}>
-          <button
-            className={`${styles.toggleBtn} ${showGhost ? styles.selected : ''}`}
-            onClick={() => setShowGhost(true)}
-          >
-            表示する
-          </button>
-          <button
-            className={`${styles.toggleBtn} ${!showGhost ? styles.selected : ''}`}
-            onClick={() => setShowGhost(false)}
-          >
-            非表示
-          </button>
         </div>
       </div>
 

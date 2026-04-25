@@ -36,7 +36,7 @@ function GameScreen({ config, onReplay, onBack }: {
   return (
     <div className={styles.app}>
       <header className={styles.header}>
-        <h1 className={styles.headerTitle}>🍺 DOTS &amp; BOXES 飲みゲー</h1>
+        <h1 className={styles.headerTitle}>🍺 DOTS &amp; BOXES with Dice</h1>
         <p className={styles.headerSub}>線を引いてマスを取れ！負けたら飲め！</p>
       </header>
 
