@@ -6,7 +6,14 @@ export interface LineKey {
   col: number;
 }
 
+export interface GameConfig {
+  rows: number;          // number of box-rows (dot-rows = rows + 1)
+  cols: number;          // number of box-cols (dot-cols = cols + 1)
+  drinkSquareCount: number;
+}
+
 export interface GameState {
+  config: GameConfig;
   horizontalLines: (Player | null)[][];
   verticalLines: (Player | null)[][];
   boxes: (Player | null)[][];
@@ -16,7 +23,8 @@ export interface GameState {
   linesLeft: number;
   phase: 'rolling' | 'drawing';
   isGameOver: boolean;
-  drinkSquare: { row: number; col: number };
-  drinkSquareRevealed: boolean;
-  drinkPlayer: Player | null;
+  drinkSquares: { row: number; col: number }[];
+  revealedDrinkSquares: boolean[];
+  drinkTriggerCount: number;
+  drinkTriggerPlayer: Player | null;
 }

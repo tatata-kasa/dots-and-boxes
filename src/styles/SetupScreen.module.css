@@ -1,0 +1,184 @@
+.screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, #0e0700 0%, #1a0e02 60%, #0e0700 100%);
+  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+  color: #f5deb3;
+  padding: 0 20px 40px;
+  box-sizing: border-box;
+}
+
+.logoArea {
+  padding: 40px 0 32px;
+  text-align: center;
+}
+
+.logoEmoji {
+  font-size: 3.5rem;
+  display: block;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #f0ad1a;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 16px rgba(240, 173, 26, 0.55);
+  margin: 10px 0 4px;
+}
+
+.subtitle {
+  font-size: 0.78rem;
+  color: #c8a96e;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+}
+
+.section {
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 28px;
+}
+
+.sectionLabel {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #c8a96e;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  padding-left: 2px;
+}
+
+/* Grid size cards */
+.gridCards {
+  display: flex;
+  gap: 12px;
+}
+
+.gridCard {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(200, 134, 10, 0.25);
+  border-radius: 14px;
+  padding: 14px 10px 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.gridCard:active {
+  transform: scale(0.97);
+}
+
+.gridCard.selected {
+  border-color: #f0ad1a;
+  background: rgba(240, 173, 26, 0.1);
+  box-shadow: 0 0 16px rgba(240, 173, 26, 0.2);
+}
+
+.gridPreview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.gridCardLabel {
+  font-size: 1.0rem;
+  font-weight: 800;
+  color: #f5deb3;
+  letter-spacing: 0.04em;
+}
+
+.gridCardSub {
+  font-size: 0.7rem;
+  color: #c8a96e;
+  margin-top: 2px;
+}
+
+/* Drink count selector */
+.drinkButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.drinkBtn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(200, 134, 10, 0.25);
+  border-radius: 12px;
+  padding: 14px 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+}
+
+.drinkBtn:active {
+  transform: scale(0.97);
+}
+
+.drinkBtn.selected {
+  border-color: #f0ad1a;
+  background: rgba(240, 173, 26, 0.1);
+  box-shadow: 0 0 14px rgba(240, 173, 26, 0.18);
+}
+
+.drinkBtnNum {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #f5deb3;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.drinkBtnLabel {
+  font-size: 0.68rem;
+  color: #c8a96e;
+  letter-spacing: 0.04em;
+}
+
+/* Start button */
+.startBtn {
+  width: 100%;
+  max-width: 360px;
+  background: linear-gradient(135deg, #c8860a, #f0ad1a);
+  color: #1a0e00;
+  font-weight: 800;
+  font-size: 1.15rem;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 0;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  font-family: inherit;
+  box-shadow: 0 6px 20px rgba(200, 134, 10, 0.5);
+  transition: transform 0.1s, box-shadow 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  margin-top: 4px;
+}
+
+.startBtn:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 10px rgba(200, 134, 10, 0.4);
+}
+
+.divider {
+  width: 100%;
+  max-width: 360px;
+  height: 1px;
+  background: rgba(200, 134, 10, 0.15);
+  margin-bottom: 28px;
+}

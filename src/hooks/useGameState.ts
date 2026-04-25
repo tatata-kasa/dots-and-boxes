@@ -1,54 +1,67 @@
 import { useState, useCallback } from 'react';
-import type { GameState, Player, LineKey } from '../types/game';
+import type { GameState, Player, LineKey, GameConfig } from '../types/game';
 
-const ROWS = 3;
-const COLS = 6;
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
-function createInitialState(): GameState {
-  const drinkSquare = {
-    row: Math.floor(Math.random() * ROWS),
-    col: Math.floor(Math.random() * COLS),
-  };
+function createInitialState(config: GameConfig): GameState {
+  const { rows, cols, drinkSquareCount } = config;
+
+  const allPositions = Array.from({ length: rows * cols }, (_, i) => ({
+    row: Math.floor(i / cols),
+    col: i % cols,
+  }));
+  const drinkSquares = shuffle(allPositions).slice(0, drinkSquareCount);
 
   return {
-    horizontalLines: Array.from({ length: ROWS + 1 }, () => Array<Player | null>(COLS).fill(null)),
-    verticalLines: Array.from({ length: ROWS }, () => Array<Player | null>(COLS + 1).fill(null)),
-    boxes: Array.from({ length: ROWS }, () => Array<Player | null>(COLS).fill(null)),
+    config,
+    horizontalLines: Array.from({ length: rows + 1 }, () => Array<Player | null>(cols).fill(null)),
+    verticalLines: Array.from({ length: rows }, () => Array<Player | null>(cols + 1).fill(null)),
+    boxes: Array.from({ length: rows }, () => Array<Player | null>(cols).fill(null)),
     currentPlayer: 1,
     scores: { 1: 0, 2: 0 },
     diceValue: null,
     linesLeft: 0,
     phase: 'rolling',
     isGameOver: false,
-    drinkSquare,
-    drinkSquareRevealed: false,
-    drinkPlayer: null,
+    drinkSquares,
+    revealedDrinkSquares: Array(drinkSquareCount).fill(false),
+    drinkTriggerCount: 0,
+    drinkTriggerPlayer: null,
   };
 }
 
 function checkBoxes(
   state: GameState,
   lastLine: LineKey
-): { newBoxes: (Player | null)[][]; completedCount: number; drinkTriggered: boolean } {
+): { newBoxes: (Player | null)[][]; completedCount: number; drinkTriggerIndices: number[] } {
+  const rows = state.boxes.length;
+  const cols = state.boxes[0].length;
   const newBoxes = state.boxes.map(row => [...row]);
-  const { horizontalLines, verticalLines, currentPlayer, drinkSquare } = state;
+  const { horizontalLines, verticalLines, currentPlayer, drinkSquares, revealedDrinkSquares } = state;
   let completedCount = 0;
-  let drinkTriggered = false;
+  const drinkTriggerIndices: number[] = [];
 
   const checkBox = (row: number, col: number) => {
-    if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return;
+    if (row < 0 || row >= rows || col < 0 || col >= cols) return;
     if (newBoxes[row][col] !== null) return;
-
-    const top = horizontalLines[row][col];
-    const bottom = horizontalLines[row + 1][col];
-    const left = verticalLines[row][col];
-    const right = verticalLines[row][col + 1];
-
-    if (top && bottom && left && right) {
+    if (
+      horizontalLines[row][col] &&
+      horizontalLines[row + 1][col] &&
+      verticalLines[row][col] &&
+      verticalLines[row][col + 1]
+    ) {
       newBoxes[row][col] = currentPlayer;
       completedCount++;
-      if (row === drinkSquare.row && col === drinkSquare.col) {
-        drinkTriggered = true;
+      const idx = drinkSquares.findIndex(ds => ds.row === row && ds.col === col);
+      if (idx >= 0 && !revealedDrinkSquares[idx]) {
+        drinkTriggerIndices.push(idx);
       }
     }
   };
@@ -61,19 +74,14 @@ function checkBoxes(
     checkBox(lastLine.row, lastLine.col);
   }
 
-  return { newBoxes, completedCount, drinkTriggered };
+  return { newBoxes, completedCount, drinkTriggerIndices };
 }
 
-export function useGameState() {
-  const [state, setState] = useState<GameState>(createInitialState);
+export function useGameState(config: GameConfig) {
+  const [state, setState] = useState<GameState>(() => createInitialState(config));
 
   const rollDice = useCallback((value: number) => {
-    setState(prev => ({
-      ...prev,
-      diceValue: value,
-      linesLeft: value,
-      phase: 'drawing',
-    }));
+    setState(prev => ({ ...prev, diceValue: value, linesLeft: value, phase: 'drawing' }));
   }, []);
 
   const drawLine = useCallback((line: LineKey) => {
@@ -91,65 +99,55 @@ export function useGameState() {
         newV[line.row][line.col] = prev.currentPlayer;
       }
 
-      const stateWithNewLine = { ...prev, horizontalLines: newH, verticalLines: newV };
-      const { newBoxes, completedCount, drinkTriggered } = checkBoxes(stateWithNewLine, line);
+      const stateWithLine = { ...prev, horizontalLines: newH, verticalLines: newV };
+      const { newBoxes, completedCount, drinkTriggerIndices } = checkBoxes(stateWithLine, line);
 
       const newScores = { ...prev.scores };
       newScores[prev.currentPlayer] += completedCount;
 
-      const totalBoxes = ROWS * COLS;
-      const filledBoxes = newBoxes.flat().filter(b => b !== null).length;
-      const isGameOver = filledBoxes === totalBoxes;
+      const totalBoxes = newBoxes.length * newBoxes[0].length;
+      const isGameOver = newBoxes.flat().filter(b => b !== null).length === totalBoxes;
 
-      let drinkPlayer = prev.drinkPlayer;
-      let drinkSquareRevealed = prev.drinkSquareRevealed;
-      if (drinkTriggered && !prev.drinkSquareRevealed) {
-        drinkSquareRevealed = true;
-        drinkPlayer = prev.currentPlayer;
+      const newRevealedDrinkSquares = [...prev.revealedDrinkSquares];
+      let newDrinkTriggerCount = prev.drinkTriggerCount;
+      let newDrinkTriggerPlayer = prev.drinkTriggerPlayer;
+      for (const idx of drinkTriggerIndices) {
+        newRevealedDrinkSquares[idx] = true;
+        newDrinkTriggerCount++;
+        newDrinkTriggerPlayer = prev.currentPlayer;
       }
 
       const newLinesLeft = prev.linesLeft - 1;
 
+      const base = {
+        ...stateWithLine,
+        boxes: newBoxes,
+        scores: newScores,
+        revealedDrinkSquares: newRevealedDrinkSquares,
+        drinkTriggerCount: newDrinkTriggerCount,
+        drinkTriggerPlayer: newDrinkTriggerPlayer,
+      };
+
       if (isGameOver) {
-        return {
-          ...stateWithNewLine,
-          boxes: newBoxes,
-          scores: newScores,
-          linesLeft: 0,
-          phase: 'rolling',
-          isGameOver: true,
-          drinkSquareRevealed,
-          drinkPlayer,
-        };
+        return { ...base, linesLeft: 0, phase: 'rolling' as const, isGameOver: true };
       }
 
       if (newLinesLeft <= 0) {
         return {
-          ...stateWithNewLine,
-          boxes: newBoxes,
-          scores: newScores,
+          ...base,
           linesLeft: 0,
-          phase: 'rolling',
+          phase: 'rolling' as const,
           diceValue: null,
-          currentPlayer: prev.currentPlayer === 1 ? 2 : 1,
-          drinkSquareRevealed,
-          drinkPlayer,
+          currentPlayer: (prev.currentPlayer === 1 ? 2 : 1) as Player,
         };
       }
 
-      return {
-        ...stateWithNewLine,
-        boxes: newBoxes,
-        scores: newScores,
-        linesLeft: newLinesLeft,
-        drinkSquareRevealed,
-        drinkPlayer,
-      };
+      return { ...base, linesLeft: newLinesLeft };
     });
   }, []);
 
-  const resetGame = useCallback(() => {
-    setState(createInitialState());
+  const resetGame = useCallback((newConfig?: GameConfig) => {
+    setState(prev => createInitialState(newConfig ?? prev.config));
   }, []);
 
   return { state, rollDice, drawLine, resetGame };
