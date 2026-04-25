@@ -9,26 +9,20 @@ interface Props {
 const GRID_OPTIONS = [
   { label: '4×5', dotRows: 4, dotCols: 5, rows: 3, cols: 4 },
   { label: '5×5', dotRows: 5, dotCols: 5, rows: 4, cols: 4 },
+  { label: '4×7', dotRows: 4, dotCols: 7, rows: 3, cols: 6 },
 ] as const;
 
 function GridPreview({ dotRows, dotCols }: { dotRows: number; dotCols: number }) {
-  const DOT_R = 3.5;
-  const GAP = 14;
-  const PAD = 6;
+  const DOT_R = 2.5;
+  const GAP = 10;
+  const PAD = 5;
   const W = PAD * 2 + (dotCols - 1) * GAP;
   const H = PAD * 2 + (dotRows - 1) * GAP;
   return (
     <svg viewBox={`0 0 ${W} ${H}`} width={W} height={H}>
       {Array.from({ length: dotRows }, (_, r) =>
         Array.from({ length: dotCols }, (_, c) => (
-          <circle
-            key={`${r}-${c}`}
-            cx={PAD + c * GAP}
-            cy={PAD + r * GAP}
-            r={DOT_R}
-            fill="#f5deb3"
-            opacity={0.85}
-          />
+          <circle key={`${r}-${c}`} cx={PAD + c * GAP} cy={PAD + r * GAP} r={DOT_R} fill="#f5deb3" opacity={0.8} />
         ))
       )}
     </svg>
@@ -36,12 +30,21 @@ function GridPreview({ dotRows, dotCols }: { dotRows: number; dotCols: number })
 }
 
 export default function SetupScreen({ onStart }: Props) {
-  const [gridIdx, setGridIdx] = useState(0);
+  const [gridIdx, setGridIdx]       = useState(0);
   const [drinkCount, setDrinkCount] = useState(1);
+  const [showGhost, setShowGhost]   = useState(true);
+  const [p1Name, setP1Name]         = useState('');
+  const [p2Name, setP2Name]         = useState('');
 
   const handleStart = () => {
     const g = GRID_OPTIONS[gridIdx];
-    onStart({ rows: g.rows, cols: g.cols, drinkSquareCount: drinkCount });
+    onStart({
+      rows: g.rows,
+      cols: g.cols,
+      drinkSquareCount: drinkCount,
+      showGhostLines: showGhost,
+      playerNames: [p1Name.trim(), p2Name.trim()],
+    });
   };
 
   return (
@@ -52,6 +55,38 @@ export default function SetupScreen({ onStart }: Props) {
         <p className={styles.subtitle}>線を引いてマスを取れ！負けたら飲め！</p>
       </div>
 
+      {/* Player names */}
+      <div className={styles.section}>
+        <div className={styles.sectionLabel}>プレイヤー名</div>
+        <div className={styles.playerNameRow}>
+          <div className={styles.nameInputWrapper}>
+            <span className={`${styles.nameLabel} ${styles.p1}`}>PLAYER 1</span>
+            <input
+              className={styles.nameInput}
+              type="text"
+              maxLength={10}
+              placeholder="Player 1"
+              value={p1Name}
+              onChange={e => setP1Name(e.target.value)}
+            />
+          </div>
+          <div className={styles.nameInputWrapper}>
+            <span className={`${styles.nameLabel} ${styles.p2}`}>PLAYER 2</span>
+            <input
+              className={styles.nameInput}
+              type="text"
+              maxLength={10}
+              placeholder="Player 2"
+              value={p2Name}
+              onChange={e => setP2Name(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.divider} />
+
+      {/* Grid size */}
       <div className={styles.section}>
         <div className={styles.sectionLabel}>マスのサイズ</div>
         <div className={styles.gridCards}>
@@ -65,14 +100,13 @@ export default function SetupScreen({ onStart }: Props) {
                 <GridPreview dotRows={g.dotRows} dotCols={g.dotCols} />
               </div>
               <div className={styles.gridCardLabel}>{g.label}</div>
-              <div className={styles.gridCardSub}>{g.rows}×{g.cols}マス ({g.rows * g.cols}マス)</div>
+              <div className={styles.gridCardSub}>{g.rows * g.cols}マス</div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className={styles.divider} />
-
+      {/* Drink squares */}
       <div className={styles.section}>
         <div className={styles.sectionLabel}>飲みマスの数</div>
         <div className={styles.drinkButtons}>
@@ -86,6 +120,25 @@ export default function SetupScreen({ onStart }: Props) {
               <span className={styles.drinkBtnLabel}>{'🍺'.repeat(n)}</span>
             </button>
           ))}
+        </div>
+      </div>
+
+      {/* Ghost lines toggle */}
+      <div className={styles.section}>
+        <div className={styles.sectionLabel}>ガイドライン（破線）</div>
+        <div className={styles.toggleRow}>
+          <button
+            className={`${styles.toggleBtn} ${showGhost ? styles.selected : ''}`}
+            onClick={() => setShowGhost(true)}
+          >
+            表示する
+          </button>
+          <button
+            className={`${styles.toggleBtn} ${!showGhost ? styles.selected : ''}`}
+            onClick={() => setShowGhost(false)}
+          >
+            非表示
+          </button>
         </div>
       </div>
 

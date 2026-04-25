@@ -13,6 +13,7 @@ const HIT_HALF = CELL / 2 - DOT_R;
 
 export default function Board({ state, onDrawLine }: Props) {
   const { horizontalLines, verticalLines, boxes, phase, linesLeft, drinkSquares, revealedDrinkSquares } = state;
+  const showGhostLines = state.config.showGhostLines;
   const ROWS = boxes.length;
   const COLS = boxes[0].length;
   const SVG_W = PAD * 2 + COLS * CELL;
@@ -51,15 +52,19 @@ export default function Board({ state, onDrawLine }: Props) {
           Array.from({ length: COLS }, (_, c) => {
             const owner = horizontalLines[r][c];
             const x1 = px(c), y1 = py(r), x2 = px(c + 1);
+
             if (owner !== null) {
               return <line key={`h-${r}-${c}`} x1={x1} y1={y1} x2={x2} y2={y1} className={lineClass(owner)} />;
             }
             if (!canDraw) {
-              return <line key={`h-${r}-${c}`} x1={x1} y1={y1} x2={x2} y2={y1} className={styles.lineGhost} />;
+              return showGhostLines
+                ? <line key={`h-${r}-${c}`} x1={x1} y1={y1} x2={x2} y2={y1} className={styles.lineGhost} />
+                : <g key={`h-${r}-${c}`} />;
             }
             return (
               <g key={`h-${r}-${c}`} onClick={() => onDrawLine({ type: 'h', row: r, col: c })}>
-                <line x1={x1} y1={y1} x2={x2} y2={y1} className={styles.lineHover} />
+                <line x1={x1} y1={y1} x2={x2} y2={y1}
+                  className={showGhostLines ? styles.lineGhost : styles.lineHover} />
                 <rect x={x1} y={y1 - HIT_HALF} width={CELL} height={HIT_HALF * 2}
                   fill="transparent" stroke="none" style={{ cursor: 'pointer' }} />
               </g>
@@ -72,15 +77,19 @@ export default function Board({ state, onDrawLine }: Props) {
           Array.from({ length: COLS + 1 }, (_, c) => {
             const owner = verticalLines[r][c];
             const x1 = px(c), y1 = py(r), y2 = py(r + 1);
+
             if (owner !== null) {
               return <line key={`v-${r}-${c}`} x1={x1} y1={y1} x2={x1} y2={y2} className={lineClass(owner)} />;
             }
             if (!canDraw) {
-              return <line key={`v-${r}-${c}`} x1={x1} y1={y1} x2={x1} y2={y2} className={styles.lineGhost} />;
+              return showGhostLines
+                ? <line key={`v-${r}-${c}`} x1={x1} y1={y1} x2={x1} y2={y2} className={styles.lineGhost} />
+                : <g key={`v-${r}-${c}`} />;
             }
             return (
               <g key={`v-${r}-${c}`} onClick={() => onDrawLine({ type: 'v', row: r, col: c })}>
-                <line x1={x1} y1={y1} x2={x1} y2={y2} className={styles.lineHover} />
+                <line x1={x1} y1={y1} x2={x1} y2={y2}
+                  className={showGhostLines ? styles.lineGhost : styles.lineHover} />
                 <rect x={x1 - HIT_HALF} y={y1} width={HIT_HALF * 2} height={CELL}
                   fill="transparent" stroke="none" style={{ cursor: 'pointer' }} />
               </g>

@@ -6,70 +6,116 @@
   background: linear-gradient(180deg, #0e0700 0%, #1a0e02 60%, #0e0700 100%);
   font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
   color: #f5deb3;
-  padding: 0 20px 40px;
+  padding: 0 20px 48px;
   box-sizing: border-box;
 }
 
 .logoArea {
-  padding: 40px 0 32px;
+  padding: 36px 0 28px;
   text-align: center;
 }
 
 .logoEmoji {
-  font-size: 3.5rem;
+  font-size: 3rem;
   display: block;
   animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
+  50%       { transform: translateY(-7px); }
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: #f0ad1a;
   letter-spacing: 0.1em;
-  text-shadow: 0 0 16px rgba(240, 173, 26, 0.55);
+  text-shadow: 0 0 16px rgba(240, 173, 26, 0.5);
   margin: 10px 0 4px;
 }
 
 .subtitle {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: #c8a96e;
   letter-spacing: 0.06em;
-  opacity: 0.85;
+  opacity: 0.8;
 }
 
 .section {
   width: 100%;
   max-width: 360px;
-  margin-bottom: 28px;
+  margin-bottom: 22px;
 }
 
 .sectionLabel {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: #c8a96e;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin-bottom: 9px;
   padding-left: 2px;
+}
+
+/* Player name inputs */
+.playerNameRow {
+  display: flex;
+  gap: 10px;
+}
+
+.nameInputWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.nameLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #c8a96e;
+}
+
+.nameLabel.p1 { color: #e05555; }
+.nameLabel.p2 { color: #5588dd; }
+
+.nameInput {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(200, 134, 10, 0.3);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #f5deb3;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+.nameInput:focus {
+  border-color: #f0ad1a;
+}
+
+.nameInput::placeholder {
+  color: rgba(200, 169, 110, 0.4);
 }
 
 /* Grid size cards */
 .gridCards {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 
 .gridCard {
   flex: 1;
   background: rgba(255, 255, 255, 0.04);
-  border: 2px solid rgba(200, 134, 10, 0.25);
-  border-radius: 14px;
-  padding: 14px 10px 12px;
+  border: 2px solid rgba(200, 134, 10, 0.22);
+  border-radius: 12px;
+  padding: 12px 6px 10px;
   cursor: pointer;
   text-align: center;
   transition: border-color 0.15s, background 0.15s, transform 0.1s;
@@ -77,31 +123,32 @@
 }
 
 .gridCard:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
 .gridCard.selected {
   border-color: #f0ad1a;
   background: rgba(240, 173, 26, 0.1);
-  box-shadow: 0 0 16px rgba(240, 173, 26, 0.2);
+  box-shadow: 0 0 14px rgba(240, 173, 26, 0.18);
 }
 
 .gridPreview {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 8px;
+  height: 44px;
+  margin-bottom: 6px;
 }
 
 .gridCardLabel {
-  font-size: 1.0rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: #f5deb3;
   letter-spacing: 0.04em;
 }
 
 .gridCardSub {
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   color: #c8a96e;
   margin-top: 2px;
 }
@@ -115,9 +162,9 @@
 .drinkBtn {
   flex: 1;
   background: rgba(255, 255, 255, 0.04);
-  border: 2px solid rgba(200, 134, 10, 0.25);
+  border: 2px solid rgba(200, 134, 10, 0.22);
   border-radius: 12px;
-  padding: 14px 8px;
+  padding: 12px 8px;
   cursor: pointer;
   text-align: center;
   transition: border-color 0.15s, background 0.15s, transform 0.1s;
@@ -126,18 +173,18 @@
 }
 
 .drinkBtn:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
 .drinkBtn.selected {
   border-color: #f0ad1a;
   background: rgba(240, 173, 26, 0.1);
-  box-shadow: 0 0 14px rgba(240, 173, 26, 0.18);
+  box-shadow: 0 0 12px rgba(240, 173, 26, 0.16);
 }
 
 .drinkBtnNum {
   display: block;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 800;
   color: #f5deb3;
   line-height: 1;
@@ -145,9 +192,49 @@
 }
 
 .drinkBtnLabel {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: #c8a96e;
-  letter-spacing: 0.04em;
+}
+
+/* Toggle (ghost lines) */
+.toggleRow {
+  display: flex;
+  gap: 10px;
+}
+
+.toggleBtn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 2px solid rgba(200, 134, 10, 0.22);
+  border-radius: 10px;
+  padding: 11px 8px;
+  cursor: pointer;
+  text-align: center;
+  font-family: inherit;
+  color: #c8a96e;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toggleBtn.selected {
+  border-color: #f0ad1a;
+  background: rgba(240, 173, 26, 0.1);
+  color: #f5deb3;
+}
+
+.toggleBtn:active {
+  transform: scale(0.97);
+}
+
+/* Divider */
+.divider {
+  width: 100%;
+  max-width: 360px;
+  height: 1px;
+  background: rgba(200, 134, 10, 0.13);
+  margin-bottom: 22px;
 }
 
 /* Start button */
@@ -157,14 +244,14 @@
   background: linear-gradient(135deg, #c8860a, #f0ad1a);
   color: #1a0e00;
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   border: none;
   border-radius: 16px;
-  padding: 18px 0;
+  padding: 17px 0;
   cursor: pointer;
   letter-spacing: 0.08em;
   font-family: inherit;
-  box-shadow: 0 6px 20px rgba(200, 134, 10, 0.5);
+  box-shadow: 0 6px 20px rgba(200, 134, 10, 0.45);
   transition: transform 0.1s, box-shadow 0.1s;
   -webkit-tap-highlight-color: transparent;
   margin-top: 4px;
@@ -172,13 +259,5 @@
 
 .startBtn:active {
   transform: translateY(2px);
-  box-shadow: 0 3px 10px rgba(200, 134, 10, 0.4);
-}
-
-.divider {
-  width: 100%;
-  max-width: 360px;
-  height: 1px;
-  background: rgba(200, 134, 10, 0.15);
-  margin-bottom: 28px;
+  box-shadow: 0 3px 10px rgba(200, 134, 10, 0.35);
 }

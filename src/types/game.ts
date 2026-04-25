@@ -7,9 +7,11 @@ export interface LineKey {
 }
 
 export interface GameConfig {
-  rows: number;          // number of box-rows (dot-rows = rows + 1)
-  cols: number;          // number of box-cols (dot-cols = cols + 1)
+  rows: number;
+  cols: number;
   drinkSquareCount: number;
+  showGhostLines: boolean;
+  playerNames: [string, string];
 }
 
 export interface GameState {

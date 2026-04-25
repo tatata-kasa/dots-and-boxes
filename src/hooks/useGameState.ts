@@ -12,7 +12,6 @@ function shuffle<T>(arr: T[]): T[] {
 
 function createInitialState(config: GameConfig): GameState {
   const { rows, cols, drinkSquareCount } = config;
-
   const allPositions = Array.from({ length: rows * cols }, (_, i) => ({
     row: Math.floor(i / cols),
     col: i % cols,
@@ -118,6 +117,7 @@ export function useGameState(config: GameConfig) {
       }
 
       const newLinesLeft = prev.linesLeft - 1;
+      const hitDrinkSquare = drinkTriggerIndices.length > 0;
 
       const base = {
         ...stateWithLine,
@@ -132,7 +132,8 @@ export function useGameState(config: GameConfig) {
         return { ...base, linesLeft: 0, phase: 'rolling' as const, isGameOver: true };
       }
 
-      if (newLinesLeft <= 0) {
+      // Force turn end when drink square is captured
+      if (newLinesLeft <= 0 || hitDrinkSquare) {
         return {
           ...base,
           linesLeft: 0,
@@ -146,9 +147,5 @@ export function useGameState(config: GameConfig) {
     });
   }, []);
 
-  const resetGame = useCallback((newConfig?: GameConfig) => {
-    setState(prev => createInitialState(newConfig ?? prev.config));
-  }, []);
-
-  return { state, rollDice, drawLine, resetGame };
+  return { state, rollDice, drawLine };
 }
